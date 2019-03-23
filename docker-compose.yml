@@ -1,0 +1,17 @@
+version: '2'
+services:
+  commanderBot:
+    image: commanderBot
+    build: 
+      context: "."
+    ports:
+      - "8443:5000"
+
+
+    restart: always
+
+    command: python3 commanderBot.py
+
+
+    volumes:
+      - .:/app

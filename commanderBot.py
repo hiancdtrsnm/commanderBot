@@ -97,7 +97,7 @@ def _send(id, msg):
 @dp.message_handler(commands=['ping'])
 async def pong(message: types.Message):
     log.info(message.chat.id)
-    await bot.send_message(message.chat.id, 'pong')
+    await bot.send_message(message.chat.id, 'ping pong es muñeco muy lindo y de cartón ...')
 
 
 async def send_message(user_id: int, text: str, disable_notification: bool = False) -> bool:

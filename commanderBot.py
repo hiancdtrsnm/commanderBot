@@ -129,7 +129,14 @@ async def send_message(user_id: int, text: str, disable_notification: bool = Fal
     else:
         log.info(f"Target [ID:{user_id}]: success")
         chat: types.Chat = await bot.get_chat(user_id)
-        chat.pin_message(msg.message_id)
+        log.info(f'Chat {chat}')
+        log.info(f'MSG {msg}')
+        log.info(f'MSGID {msg["message_id"]}')
+        id = msg["message_id"]
+        log.info(f'{chat} {id}')
+        sucess = await bot.pin_chat_message(chat['id'], id)
+        # sucess = await chat.pin_message(msg['message_id'])
+        log.info(f'Sucess {sucess}')
 
         return True
     return False

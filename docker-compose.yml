@@ -4,8 +4,8 @@ services:
     image: commanderbot
     build: 
       context: "."
-    ports:
-      - "8443:5000"
+    # ports:
+    #   - "8443:5000"
 
 
     restart: always

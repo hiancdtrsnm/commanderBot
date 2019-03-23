@@ -109,8 +109,10 @@ async def send_message(user_id: int, text: str, disable_notification: bool = Fal
     :param disable_notification:
     :return:
     """
+
+    msg = None
     try:
-        await bot.send_message(user_id, text, disable_notification=disable_notification)
+        msg: types.Message = await bot.send_message(user_id, text, disable_notification=disable_notification)
     except exceptions.BotBlocked:
         log.error(f"Target [ID:{user_id}]: blocked by user")
     except exceptions.ChatNotFound:
@@ -126,6 +128,9 @@ async def send_message(user_id: int, text: str, disable_notification: bool = Fal
         log.exception(f"Target [ID:{user_id}]: failed")
     else:
         log.info(f"Target [ID:{user_id}]: success")
+        chat: types.Chat = await bot.get_chat(user_id)
+        chat.pin_message(msg.message_id)
+
         return True
     return False
 

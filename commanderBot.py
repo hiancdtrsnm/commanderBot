@@ -94,10 +94,10 @@ def _send(id, msg):
     return lambda :send_message(id, msg)
 
 
-@dp.message_handler()
-async def echo(message: types.Message):
+@dp.message_handler(commands=['ping'])
+async def pong(message: types.Message):
     log.info(message.chat.id)
-    await bot.send_message(message.chat.id, message.text)
+    await bot.send_message(message.chat.id, 'pong')
 
 
 async def send_message(user_id: int, text: str, disable_notification: bool = False) -> bool:

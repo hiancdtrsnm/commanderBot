@@ -107,7 +107,8 @@ async def delete_5_minutes_before(message: types.Message):
     now = datetime.now(timezone.utc)
     administrators = list(map(lambda x: x.user.id, await message.chat.get_administrators()))
     log.info(message)
-    if next_battle - now < timedelta(minutes=5):
+    log.info(f'Time: {nbattle - now}')
+    if nbattle - now < timedelta(minutes=5):
         if message.from_user.id not in administrators:
             log.info(f'Deleting {message.chat.id}->{message.message_id}')
             await bot.delete_message(message.chat.id, message.message_id)

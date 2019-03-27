@@ -16,13 +16,13 @@ import json
 import os
 from utils import transform_orders
 import pytz
+from config import ORDERS, battles
+from utils import next_battle
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger('broadcast')
 configs = json.load(open('config.json'))
 API_TOKEN = configs['AUTHORIZATION_TOKEN']
-ORDERS = os.getenv('ORDERS', 'ordersexample.json')
-BATTLES = os.getenv('BATTLES', 'battles.json')
-battles = json.load(open(BATTLES))
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
@@ -99,6 +99,23 @@ async def pong(message: types.Message):
     log.info(message.chat.id)
     await bot.send_message(message.chat.id, 'ping pong es muñeco muy lindo y de cartón ...')
 
+
+@dp.message_handler()
+async def delete_5_minutes_before(message: types.Message):
+
+    nbattle = await next_battle()
+    now = datetime.now(timezone.utc)
+    administrators = list(map(lambda x: x.user.id, await message.chat.get_administrators()))
+    log.info(message)
+    if next_battle - now < timedelta(minutes=5):
+        if message.from_user.id not in administrators:
+            log.info(f'Deleting {message.chat.id}->{message.message_id}')
+            await bot.delete_message(message.chat.id, message.message_id)
+
+    # bot.delete_message
+
+
+    # await bot.send_message(message.chat.id, 'ping pong es muñeco muy lindo y de cartón ...')
 
 async def send_message(user_id: int, text: str, disable_notification: bool = False) -> bool:
     """
